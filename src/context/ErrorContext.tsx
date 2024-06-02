@@ -7,7 +7,7 @@ interface ErrorContextType {
 }
 
 export const ErrorContext = createContext<ErrorContextType | undefined>(
-  undefined
+  undefined,
 );
 
 interface ErrorProviderProps {

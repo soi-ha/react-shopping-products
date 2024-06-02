@@ -10,5 +10,5 @@ export default mergeConfig(
       environment: "jsdom",
       setupFiles: ["./vitest.setup.ts"],
     },
-  })
+  }),
 );

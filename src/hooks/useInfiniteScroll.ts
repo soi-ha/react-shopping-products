@@ -27,7 +27,7 @@ export default function useInfiniteScroll({
       });
       if (node) observer.current.observe(node);
     },
-    [hasMore, nextPage, loading]
+    [hasMore, nextPage, loading],
   );
 
   return { lastElementRef };

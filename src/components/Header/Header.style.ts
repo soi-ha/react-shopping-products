@@ -1,12 +1,13 @@
 import styled from "styled-components";
+import STYLE from "@constants/style";
 
 export const HeaderStyle = styled.header`
   display: flex;
-  background-color: #000000;
+  background-color: ${STYLE.COLOR.black};
   width: inherit;
   height: 64px;
   position: fixed;
-  z-index: 1;
+  z-index: ${STYLE.Z_INDEX.header};
   padding: 16px 24px 16px;
   box-sizing: border-box;
 `;
@@ -23,7 +24,7 @@ export const CartImg = styled.img`
 `;
 
 export const CartCount = styled.div`
-  background-color: #ffffff;
+  background-color: ${STYLE.COLOR.white};
   border-radius: 999px;
   width: 19px;
   height: 19px;

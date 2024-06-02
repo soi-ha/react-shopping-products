@@ -1,6 +1,6 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
-import { getCartItems } from "../api";
-import { useError } from "../hooks/useError";
+import { getCartItems } from "@api/index";
+import { useError } from "@hooks/index";
 
 interface CartItemsContextType {
   cartItems: CartItem[];

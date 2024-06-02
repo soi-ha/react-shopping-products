@@ -5,9 +5,12 @@
  */
 export const RULE = {
   sortQueryByIdAsc: "&sort=id%2Casc",
+  initialPage: 0,
+  initialSize: 20,
+  nextSize: 4,
 };
 
-export const FILTER_CATEGORIES: Record<Category | "all", string> = {
+export const FILTER_CATEGORIES: Record<Category, string> = {
   all: "전체",
   fashion: "패션",
   electronics: "전자",

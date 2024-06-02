@@ -1,4 +1,5 @@
 type Category =
+  | "all"
   | "fashion"
   | "electronics"
   | "beverage"

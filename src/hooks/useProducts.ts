@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { getProducts } from "../api";
-import { useError } from "./useError";
+import { getProducts } from "@api/index";
+import { useError } from "./index";
+import { RULE } from "@constants/rules";
 
 interface UseProductsResult {
   products: Product[];
   loading: boolean;
   hasMore: boolean;
-  handleCategory: (category: Category | "all") => void;
+  handleCategory: (category: Category) => void;
   handleSort: (sort: Sort) => void;
 }
 
@@ -21,7 +22,7 @@ export default function useProducts({
 }: UseProductsProps): UseProductsResult {
   const [products, setProducts] = useState<Product[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const [category, setCategory] = useState<Category | "all">("all");
+  const [category, setCategory] = useState<Category>("all");
   const [sort, setSort] = useState<Sort>("asc");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -32,19 +33,17 @@ export default function useProducts({
       setLoading(true);
 
       try {
-        const size = page === 0 ? 20 : 4;
+        const size =
+          page === RULE.initialPage ? RULE.initialSize : RULE.nextSize;
         const responseData = await getProducts({
           category: category === "all" ? undefined : category,
           sort,
           page,
           size,
         });
-        setProducts((prevProducts) => [
-          ...prevProducts,
-          ...responseData.content,
-        ]);
+        setProducts((prevProducts) => [...prevProducts, ...responseData]);
 
-        if (responseData.content.length < size) {
+        if (responseData.length < size) {
           setHasMore(false);
         }
       } catch (error) {
@@ -61,7 +60,7 @@ export default function useProducts({
     }
   }, [page, category, sort, showError]);
 
-  const handleCategory = (category: Category | "all") => {
+  const handleCategory = (category: Category) => {
     setProducts([]);
     setCategory(category);
     resetPage();

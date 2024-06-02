@@ -1,6 +1,6 @@
 import { AddCartStyle, RemoveCartStyle } from "./Button.style";
-import AddCart from "../../assets/add-cart.svg";
-import RemoveCart from "../../assets/remove-cart.svg";
+import AddCart from "@assets/add-cart.svg";
+import RemoveCart from "@assets/remove-cart.svg";
 
 interface CartControlButtonProps {
   isInCart: boolean;

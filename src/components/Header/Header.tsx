@@ -1,16 +1,12 @@
-import Logo from "../../assets/logo.svg";
-import Cart from "../../assets/cart.svg";
+import Logo from "@assets/logo.svg";
+import Cart from "@assets/cart.svg";
 import { HeaderStyle, CartCount, LogoImg, CartImg } from "./Header.style";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { CartItemsContext } from "../../context/CartItemsContext";
 
 export default function Header() {
-  const [quantityInCart, setQuantityInCart] = useState(0);
   const { cartItems } = useContext(CartItemsContext);
-
-  useEffect(() => {
-    setQuantityInCart(cartItems.length);
-  }, [cartItems]);
+  const quantityInCart = cartItems.length;
 
   return (
     <HeaderStyle>

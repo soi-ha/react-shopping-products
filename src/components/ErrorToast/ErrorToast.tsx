@@ -1,14 +1,18 @@
 import { useEffect } from "react";
-import { useError } from "../../hooks/useError";
+import { useError } from "@hooks/index";
 import { ErrorToastStyle } from "./ErrorToast.style";
 
 const ErrorToast = () => {
   const { error, hideError } = useError();
 
   useEffect(() => {
-    setTimeout(() => {
+    const timerId = setTimeout(() => {
       hideError();
     }, 3000);
+
+    return () => {
+      clearTimeout(timerId);
+    };
   }, [error, hideError]);
 
   if (!error) {

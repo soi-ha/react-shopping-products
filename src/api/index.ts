@@ -1,4 +1,4 @@
-import { RULE } from "../constants/rules";
+import { RULE } from "@constants/rules";
 import {
   CART_ITEMS_COUNTS_ENDPOINT,
   CART_ITEMS_ENDPOINT,
@@ -6,6 +6,15 @@ import {
 } from "./endpoints";
 import { fetchWithAuth } from "./fetchWithAuth";
 
+/**
+ * @example
+ * const params: QueryParams = {
+ *  category: 'fashion',
+ *  page: 1,
+ *  size: 20,
+ *  sort: ['price', 'asc']
+ * }
+ */
 interface QueryParams {
   [key: string]:
     | undefined
@@ -22,16 +31,12 @@ export interface GetProductsParams {
   sort?: Sort;
 }
 
-const createQueryString = (params: QueryParams): string => {
+const createQueryString = (params: QueryParams) => {
   return Object.entries(params)
+    .filter(([, value]) => value !== undefined)
     .map(([key, value]) => {
-      if (value === undefined) {
-        return;
-      }
       if (Array.isArray(value)) {
-        return `${encodeURIComponent(key)}=${encodeURIComponent(
-          value.join(",")
-        )}`;
+        return `${encodeURIComponent(key)}=${encodeURIComponent(value.join(","))}`;
       }
       return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
     })
@@ -43,7 +48,7 @@ export const getProducts = async ({
   page = 0,
   size = 20,
   sort = "asc",
-}: GetProductsParams = {}) => {
+}: GetProductsParams = {}): Promise<Product[]> => {
   const params = {
     category,
     page,
@@ -61,12 +66,12 @@ export const getProducts = async ({
     throw new Error("Failed to get products item");
   }
 
-  return data;
+  return data.content;
 };
 
 export const postProductInCart = async (
   productId: number,
-  quantity: number = 1
+  quantity: number = 1,
 ) => {
   const response = await fetchWithAuth(CART_ITEMS_ENDPOINT, {
     method: "POST",
@@ -91,7 +96,7 @@ export const deleteProductInCart = async (cartId: number) => {
   }
 };
 
-export const getCartItemsCount = async () => {
+export const getCartItemsCount = async (): Promise<number> => {
   const response = await fetchWithAuth(CART_ITEMS_COUNTS_ENDPOINT, {
     method: "GET",
   });

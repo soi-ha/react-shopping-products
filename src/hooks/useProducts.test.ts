@@ -1,11 +1,9 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import useProducts from "./useProducts";
-import { ErrorProvider } from "../context/ErrorContext";
-import { PRODUCTS_ENDPOINT } from "../api/endpoints";
+import { ErrorProvider } from "@context/ErrorContext";
+import { PRODUCTS_ENDPOINT } from "@api/endpoints";
 import { HttpResponse, http } from "msw";
-import { server } from "../mocks/server";
-import { useError } from "./useError";
-import usePagination from "./usePagination";
+import { server } from "@mocks/server";
+import { useError, usePagination, useProducts } from "./index";
 import { act } from "react";
 
 describe("useProducts", () => {
@@ -17,12 +15,14 @@ describe("useProducts", () => {
         wrapper: ErrorProvider,
       });
 
+      const expectedLength = 20;
+
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(expectedLength);
       });
     });
 
-    it("상품 목록 조회 중 로딩 상태", async () => {
+    it("상품 목록 조회 중일 경우 로딩 상태가 된다.", async () => {
       const { result } = renderHook(() => useProducts(initialParams), {
         wrapper: ErrorProvider,
       });
@@ -32,11 +32,11 @@ describe("useProducts", () => {
       });
     });
 
-    it("상품 목록 조회 중 에러 상태", async () => {
+    it("상품 목록 조회 중 에러가 발생할 경우 error의 값은 true가 된다.", async () => {
       server.use(
         http.get(PRODUCTS_ENDPOINT, () => {
           return new HttpResponse(null, { status: 500 });
-        })
+        }),
       );
 
       const { result } = renderHook(
@@ -50,18 +50,20 @@ describe("useProducts", () => {
         },
         {
           wrapper: ErrorProvider,
-        }
+        },
       );
 
+      const expectedProducts: Product[] = [];
+
       await waitFor(() => {
-        expect(result.current.products).toEqual([]);
+        expect(result.current.products).toEqual(expectedProducts);
         expect(result.current.error).toBeTruthy();
       });
     });
   });
 
   describe("페이지네이션", () => {
-    it("초기에 첫 페이지의 상품 20개를 불러온다", async () => {
+    it("초기에 첫 페이지의 상품 20개를 불러온다.", async () => {
       const { result } = renderHook(
         () => {
           const { products } = useProducts(initialParams);
@@ -70,16 +72,19 @@ describe("useProducts", () => {
         },
         {
           wrapper: ErrorProvider,
-        }
+        },
       );
 
+      const expectedLength = 20;
+      const expectedPage = 0;
+
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(0);
+        expect(result.current.products).toHaveLength(expectedLength);
+        expect(result.current.page).toBe(expectedPage);
       });
     });
 
-    it("다음 페이지의 상품 4개를 추가로 불러온다", async () => {
+    it("다음 페이지의 상품 4개를 추가로 불러온다.", async () => {
       const { result } = renderHook(
         () => {
           const { page, resetPage, nextPage } = usePagination();
@@ -91,21 +96,27 @@ describe("useProducts", () => {
         },
         {
           wrapper: ErrorProvider,
-        }
+        },
       );
 
+      const initialExpectedLength = 20;
+      const initialExpectedPage = 0;
+
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(0);
+        expect(result.current.products).toHaveLength(initialExpectedLength);
+        expect(result.current.page).toBe(initialExpectedPage);
       });
 
       act(() => {
         result.current.nextPage();
       });
 
+      const nextExpectedLength = 24;
+      const nextExpectedPage = 5;
+
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(24);
-        expect(result.current.page).toBe(5);
+        expect(result.current.products).toHaveLength(nextExpectedLength);
+        expect(result.current.page).toBe(nextExpectedPage);
       });
     });
 
@@ -121,12 +132,15 @@ describe("useProducts", () => {
         },
         {
           wrapper: ErrorProvider,
-        }
+        },
       );
 
+      const initialExpectedLength = 20;
+      const initialExpectedPage = 0;
+
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(0);
+        expect(result.current.products).toHaveLength(initialExpectedLength);
+        expect(result.current.page).toBe(initialExpectedPage);
       });
 
       for (let i = 1; i < 21; i++) {
@@ -137,10 +151,11 @@ describe("useProducts", () => {
         });
 
         const expectedLength = 20 + i * 4;
+        const expectedPage = i + 4;
 
         await waitFor(() => {
           expect(result.current.products).toHaveLength(expectedLength);
-          expect(result.current.page).toBe(i + 4);
+          expect(result.current.page).toBe(expectedPage);
         });
       }
 
@@ -148,9 +163,12 @@ describe("useProducts", () => {
         result.current.nextPage();
       });
 
+      const finalExpectedLength = 100;
+      const finalExpectedPage = 25;
+
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(100);
-        expect(result.current.page).toBe(25);
+        expect(result.current.products).toHaveLength(finalExpectedLength);
+        expect(result.current.page).toBe(finalExpectedPage);
       });
     });
 
@@ -166,7 +184,7 @@ describe("useProducts", () => {
         },
         {
           wrapper: ErrorProvider,
-        }
+        },
       );
 
       await waitFor(() => {
