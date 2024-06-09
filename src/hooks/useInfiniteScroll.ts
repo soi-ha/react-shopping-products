@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useRef } from "react";
 
 interface UseInfiniteScrollResult {
   lastElementRef: (node: HTMLDivElement) => void;
@@ -17,18 +17,15 @@ export default function useInfiniteScroll({
 }: UseInfiniteScrollProps): UseInfiniteScrollResult {
   const observer = useRef<IntersectionObserver | null>(null);
 
-  const lastElementRef = useCallback(
-    (node: HTMLDivElement) => {
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore && !loading) {
-          nextPage();
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [hasMore, nextPage, loading],
-  );
+  const lastElementRef = (node: HTMLDivElement) => {
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && hasMore && !loading) {
+        nextPage();
+      }
+    });
+    if (node) observer.current.observe(node);
+  };
 
   return { lastElementRef };
 }

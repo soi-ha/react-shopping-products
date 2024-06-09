@@ -48,7 +48,7 @@ export const getProducts = async ({
   page = 0,
   size = 20,
   sort = "asc",
-}: GetProductsParams = {}): Promise<Product[]> => {
+}: GetProductsParams = {}): Promise<ApiResponse> => {
   const params = {
     category,
     page,
@@ -66,7 +66,7 @@ export const getProducts = async ({
     throw new Error("Failed to get products item");
   }
 
-  return data.content;
+  return data;
 };
 
 export const postProductInCart = async (
@@ -120,4 +120,17 @@ export const getCartItems = async (): Promise<CartItem[]> => {
   }
 
   return data.content;
+};
+
+export const patchCartItems = async (cartId: number, quantity: number) => {
+  const response = await fetchWithAuth(`${CART_ITEMS_ENDPOINT}/${cartId}`, {
+    method: "PATCH",
+    body: {
+      quantity,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to patch cart item in cart");
+  }
 };

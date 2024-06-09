@@ -4,6 +4,9 @@ export const Body = styled.section`
   padding: 28px 25px;
   padding-top: 100px;
   min-height: 85vh;
+  width: inherit;
+  height: inherit;
+  box-sizing: border-box;
 `;
 
 export const Top = styled.div`

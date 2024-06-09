@@ -5,9 +5,9 @@
  */
 export const RULE = {
   sortQueryByIdAsc: "&sort=id%2Casc",
-  initialPage: 0,
-  initialSize: 20,
-  nextSize: 4,
+  initialPage: 0, // 최초 페이지는 0부터 시작
+  initialSize: 20, // 최초 페이지는 20개의 데이터를 요청
+  nextSize: 4, // 이후의 페이지는 4개의 데이터를 요청
 };
 
 export const FILTER_CATEGORIES: Record<Category, string> = {
