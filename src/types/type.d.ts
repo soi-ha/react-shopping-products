@@ -36,7 +36,7 @@ interface Pageable {
   unpaged: boolean;
 }
 
-interface ApiResponse {
+interface ProductPaginated {
   content: Product[];
   pageable: Pageable;
   last: boolean;

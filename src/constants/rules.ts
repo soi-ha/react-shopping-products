@@ -10,6 +10,11 @@ export const RULE = {
   nextSize: 4, // 이후의 페이지는 4개의 데이터를 요청
 };
 
+export const QUERY_KEY = {
+  cartItems: "cartItems",
+  products: "products",
+};
+
 export const FILTER_CATEGORIES: Record<Category, string> = {
   all: "전체",
   fashion: "패션",

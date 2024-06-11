@@ -1,6 +1,6 @@
 import { AddCartStyle, RemoveCartStyle } from "./Button.style";
-import AddCart from "@assets/add-cart.svg";
-import RemoveCart from "@assets/remove-cart.svg";
+import AddCartImg from "@assets/add-cart.svg";
+import RemoveCartImg from "@assets/remove-cart.svg";
 
 interface CartControlButtonProps {
   isInCart: boolean;
@@ -12,12 +12,12 @@ const CartControlButton = ({ isInCart, onClick }: CartControlButtonProps) => {
     <>
       {isInCart ? (
         <RemoveCartStyle onClick={onClick}>
-          <img src={RemoveCart} alt="장바구니 삭제" />
+          <img src={RemoveCartImg} alt="장바구니 삭제" />
           <span>빼기</span>
         </RemoveCartStyle>
       ) : (
         <AddCartStyle onClick={onClick}>
-          <img src={AddCart} alt="장바구니 추가" />
+          <img src={AddCartImg} alt="장바구니 추가" />
           <span>담기</span>
         </AddCartStyle>
       )}

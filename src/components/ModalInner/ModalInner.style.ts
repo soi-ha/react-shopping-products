@@ -20,23 +20,17 @@ export const CartItemContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  .cart-item_content_name {
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 23px;
-  }
+`;
 
-  .cart-item_content_price {
-    font-weight: 500;
-    font-size: 12px;
-  }
+export const ContentName = styled.p`
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+`;
 
-  .cart-item_content_amount-bundle {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
-  }
+export const ContentPrice = styled.span`
+  font-weight: 500;
+  font-size: 12px;
 `;
 
 export const CartItemDeleteButton = styled.div`
@@ -44,7 +38,7 @@ export const CartItemDeleteButton = styled.div`
   right: 7px;
 `;
 
-export const TotalPrice = styled.div`
+export const TotalPriceStyle = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -52,12 +46,12 @@ export const TotalPrice = styled.div`
   padding-right: 5px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   font-weight: 700;
+`;
 
-  .total-price_title {
-    font-size: 16px;
-  }
+export const TotalPriceTitle = styled.p`
+  font-size: 16px;
+`;
 
-  .total-price_price {
-    font-size: 24px;
-  }
+export const TotalPrice = styled.p`
+  font-size: 24px;
 `;

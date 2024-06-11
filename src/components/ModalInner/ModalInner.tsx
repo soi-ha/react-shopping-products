@@ -1,31 +1,20 @@
 import { Button } from "@components/Button/index";
 import CountControlButtonBundle from "../CountControlButtonBundle/CountControlButtonBundle";
-import { useCartItems, useControlCart, useDeleteCart } from "@hooks/index";
+import { useCartItems, useDeleteCart, useError } from "@hooks/index";
 import * as MI from "./ModalInner.style";
 
 const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
-  const { addToCart, deleteToCart } = useControlCart({
-    cartItemId: cartItem.id,
-    quantity: cartItem.quantity,
-  });
+  const { showError } = useError();
 
   const { deleteCartItem } = useDeleteCart({ cartId: cartItem.id });
 
-  const handleIncrementAmount = () => {
-    if (addToCart.mutate) {
-      addToCart.mutate();
-    }
-  };
-
-  const handleDecrementAmount = () => {
-    if (deleteToCart.mutate) {
-      deleteToCart.mutate();
-    }
-  };
-
   const handleDeleteCartItem = () => {
-    if (deleteCartItem.mutate) {
+    try {
       deleteCartItem.mutate();
+    } catch (error) {
+      if (error instanceof Error) {
+        showError(error.message);
+      }
     }
   };
 
@@ -33,14 +22,14 @@ const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
     <MI.CartItem>
       <MI.CartItemImg src={cartItem.product.imageUrl} alt="" />
       <MI.CartItemContent>
-        <p className="cart-item_content_name">{cartItem.product.name}</p>
-        <span className="cart-item_content_price">
+        <MI.ContentName>{cartItem.product.name}</MI.ContentName>
+        <MI.ContentPrice>
           {cartItem.product.price.toLocaleString("ko-kr")}원
-        </span>
+        </MI.ContentPrice>
         <CountControlButtonBundle
           amount={cartItem.quantity}
-          handleIncrementAmount={handleIncrementAmount}
-          handleDecrementAmount={handleDecrementAmount}
+          cartItemId={cartItem.id}
+          cartItemQuantity={cartItem.quantity}
         />
       </MI.CartItemContent>
       <MI.CartItemDeleteButton>
@@ -51,7 +40,7 @@ const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
 };
 
 const ModalInner = () => {
-  const { cartItems } = useCartItems();
+  const { cartItems } = useCartItems({ retry: false });
 
   return (
     <>
@@ -59,10 +48,10 @@ const ModalInner = () => {
         cartItems.map((item) => {
           return <CartItem cartItem={item} />;
         })}
-      <MI.TotalPrice>
-        <p className="total-price_title">총 결제 금액</p>
-        <p className="total-price_price">95,000원</p>
-      </MI.TotalPrice>
+      <MI.TotalPriceStyle>
+        <MI.TotalPriceTitle>총 결제 금액</MI.TotalPriceTitle>
+        <MI.TotalPrice>95,000원</MI.TotalPrice>
+      </MI.TotalPriceStyle>
     </>
   );
 };

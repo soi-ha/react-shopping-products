@@ -48,7 +48,7 @@ export const getProducts = async ({
   page = 0,
   size = 20,
   sort = "asc",
-}: GetProductsParams = {}): Promise<ApiResponse> => {
+}: GetProductsParams = {}): Promise<ProductPaginated> => {
   const params = {
     category,
     page,

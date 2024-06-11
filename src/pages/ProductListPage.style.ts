@@ -16,3 +16,12 @@ export const Top = styled.div`
   font-weight: 500;
   text-align: center;
 `;
+
+export const Loading = styled.div`
+  font-size: 30px;
+  font-weight: 700;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

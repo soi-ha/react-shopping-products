@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import ErrorToast from "@components/ErrorToast/ErrorToast";
 import Header from "@components/Header/Header";
 import ProductList from "@components/ProductList/ProductList";
@@ -7,6 +7,10 @@ import { Modal } from "soha-components";
 import ModalInner from "@components/ModalInner/ModalInner";
 
 import * as PLP from "./ProductListPage.style";
+
+const Loading = () => {
+  return <PLP.Loading>로딩중! 💪</PLP.Loading>;
+};
 
 const ProductListPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -19,7 +23,9 @@ const ProductListPage = () => {
       </PLP.Top>
 
       <PLP.Body>
-        <ProductList />
+        <Suspense fallback={<Loading />}>
+          <ProductList />
+        </Suspense>
       </PLP.Body>
       {openModal && (
         <Modal
