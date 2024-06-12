@@ -13,7 +13,7 @@ import React from "react";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 20000,
+      staleTime: 20 * 1000,
       refetchOnWindowFocus: false,
       throwOnError: true,
     },
