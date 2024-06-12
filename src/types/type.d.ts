@@ -36,7 +36,7 @@ interface Pageable {
   unpaged: boolean;
 }
 
-interface ProductPaginated {
+interface ProductPaginatedResponse {
   content: Product[];
   pageable: Pageable;
   last: boolean;
