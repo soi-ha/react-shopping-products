@@ -42,6 +42,10 @@ const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
 const ModalInner = () => {
   const { cartItems } = useCartItems({ retry: false });
 
+  const totalPrice = cartItems.reduce((acc, item) => {
+    return acc + item.quantity * item.product.price;
+  }, 0);
+
   return (
     <>
       {cartItems &&
@@ -50,7 +54,7 @@ const ModalInner = () => {
         })}
       <MI.TotalPriceStyle>
         <MI.TotalPriceTitle>총 결제 금액</MI.TotalPriceTitle>
-        <MI.TotalPrice>95,000원</MI.TotalPrice>
+        <MI.TotalPrice>{totalPrice.toLocaleString("ko-kr")}원</MI.TotalPrice>
       </MI.TotalPriceStyle>
     </>
   );
